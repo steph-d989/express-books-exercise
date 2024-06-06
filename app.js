@@ -38,36 +38,31 @@ app.get('/year&pages/cervantes', (req, res) => {
     const cervantes = bookData.find(book => book.author === 'Miguel de Cervantes');
     if (cervantes) {
       res.send({ pages: cervantes.pages, year: cervantes.year });
-    } else {
-      res.status(404).send('No existe el libro.');
     }
   });
+  app.get('/country/count/spain', (req, res) => {
+    let count = 0;
+    for (i = 0; i < bookData.length; i++) {
+      if (bookData[i].country === 'Spain') {
+        count += 1;
+      };
+    };
+    res.json(count);
+  });
+  app.get('/country/at-least/germany', (req, res) => {
+    const germany = bookData.find(book => book.country === 'Germany');
+    germany !== '' ? res.send(true) : false;
+  });
+  app.get('/pages/all-greater/200', (req, res) => {
+    let greaterThan200 = true;
 
-/* 
-app.get('/country/count/:pais', (req, res) => {
-    const pais = req.country.count.pais;
-    let contador = 0;
-    if (pais) {
-        bookData.forEach((element) => {
-            if ((element.country).toLowerCase() === pais) {
-
-                contador++
-            }
-        })
-        res.send(contador);
+    for (let i = 0; i < bookData.length; i++) {
+      if (bookData[i].pages <= 200) {
+        greaterThan200 = false;
+      }
     }
-})
-
-app.get('/country/at-least/germany', (req, res) => {
-
-})
-
-app.get('/pages/all-greater/200', (req, res) => {
-
-})
-
-
- */
+    res.json(greaterThan200);
+  });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
